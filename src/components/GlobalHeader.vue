@@ -1,7 +1,7 @@
 <template>
   <div id="globalHeader">
     <!-- 使用栅格布局 -->
-    <a-row>
+    <a-row :wrap="false">
       <!-- logo标题设置 -->
       <a-col flex="200px">
         <div class="title-bar">
@@ -17,9 +17,15 @@
           selectedKeys —— 组件定义的 prop 名称
           "current" —— 绑定的数据
         :items:把菜单数据传给 Menu 组件
+        @click="doMenuClick" 实现点击事件路由的跳转
        -->
       <a-col flex="auto">
-        <a-menu v-model:selectedKeys="current" mode="horizontal" :items="items" />
+        <a-menu
+          v-model:selectedKeys="current"
+          mode="horizontal"
+          :items="items"
+          @click="doMenuClick"
+        />
       </a-col>
 
       <!-- 登录按钮 -->
@@ -37,10 +43,34 @@ h函数：渲染函数，用来在 JS 中创建虚拟 DOM 节点
 ref函数：创建响应式数据，数据变化时界面自动更新
 -->
 <script lang="ts" setup>
-import { h, ref } from 'vue'
+import { h, ref, computed } from 'vue'
 import { HomeOutlined, CrownOutlined } from '@ant-design/icons-vue'
 import { type MenuProps } from 'ant-design-vue'
-const current = ref<string[]>(['/']) // 临时存储当前选中状态，默认选中 key 为 主页 的菜单
+import { useRouter, useRoute } from 'vue-router'
+
+/*
+useRouter()	路由实例，用来跳转
+useRoute()	当前路由信息，用来读取
+*/
+const router = useRouter()
+const route = useRoute()
+
+// 点击菜单后的路由跳转事件
+const doMenuClick = ({ key }: { key: string }) => {
+  if (key.startsWith('/')) {
+    router.push(key)
+  }
+}
+
+// computed = 根据其他响应式数据，自动计算出一个新的响应式数据,当 route.path 变化时，自动重新计算 current，并更新界面。
+const current = computed(() => [route.path])
+
+/* const current = ref<string[]>(['/']) // 临时存储当前选中状态，默认选中 key 为 主页 的菜单
+afterEach 是路由跳转完成后的"钩子函数"，每次切换页面都会自动触发。 常用来做页面标题更新、日志记录、埋点上报等操作。
+router.afterEach((to) => {
+  current.value = [to.path]
+}) */
+
 const items = ref<MenuProps['items']>([
   {
     key: '/',
