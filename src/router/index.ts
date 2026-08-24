@@ -6,23 +6,44 @@ RouteRecordRaw: TypeScript 类型，用来约束路由配置的格式（只用�
 */
 
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import HomeView from '@/views/HomeView.vue'
+import UserLoginAndRegisterView from '@/views/UserLoginAndRegisterView.vue'
+import UserInformationView from'@/views/UserInformationView.vue'
 
 /*
 直接导入：import HomeView from '...'	打包进主文件（vendor.js）	页面加载时就下载
-懒加载： () => import('...')	单独打包成独立文件（about-view.js）	访问 /about 时才下载
+懒加载： () => import('...')	单独打包成独立文件	访问时才下载
 */
 const routes: Array<RouteRecordRaw> = [
   {
-    path: '/', // URL 路径
+    path: '/',           // URL 路径
     name: 'home',
-    component: HomeView, // 匹配到该路径后，要渲染的 Vue 组件
+    component: HomeView, // 匹配到该路径后，要渲染的 Vue 组件,  首页：静态导入（秒开）
   },
   {
-    path: '/about',
-    name: 'about',
-    component: () => import('../views/AboutView.vue'),
+    path: '/user/login',
+    name: '登录',
+    component: UserLoginAndRegisterView,
   },
+  {
+    path: '/user/information',
+    name: '个人信息',
+    component: UserInformationView,     // 可静态可动态
+  },
+  {
+    path: '/admin/userManage',
+    name: '用户管理',
+    component: () => import('@/views/UserAdminView.vue'), // 懒加载
+  },
+  {
+    path: '/admin/userManageDetail/:id',
+    name: '用户详细管理',
+    component: () => import('@/views/UserAdminInformationView.vue'),
+  },
+  {
+    path: '/:pathMatch(.*)*', // 通配符路由
+    redirect: '/'              // 重定向到首页
+  }
 ]
 
 const router = createRouter({
