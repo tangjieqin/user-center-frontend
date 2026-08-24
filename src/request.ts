@@ -7,7 +7,7 @@ const myAxios = axios.create({
 });
 
 // 添加请求拦截器
-axios.interceptors.request.use(
+myAxios.interceptors.request.use(
   function (config) {
     // 在发送请求之前做些什么
     return config;
@@ -19,7 +19,7 @@ axios.interceptors.request.use(
 );
 
 // 添加响应拦截器
-axios.interceptors.response.use(
+myAxios.interceptors.response.use(
   function (response) {
     console.log(response);
     const { data } = response;
