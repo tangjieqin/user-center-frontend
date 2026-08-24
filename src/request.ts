@@ -1,45 +1,47 @@
-import axios from 'axios'
+import axios from "axios";
 
-const instance = axios.create({
-  baseURL: 'https://localhost:8082',
+const myAxios = axios.create({
+  baseURL: "https://localhost:8082",
   timeout: 1000,
-  headers: { 'X-Custom-Header': 'foobar' },
-})
+  headers: { "X-Custom-Header": "foobar" },
+});
 
 // 添加请求拦截器
 axios.interceptors.request.use(
   function (config) {
     // 在发送请求之前做些什么
-    return config
+    return config;
   },
   function (error) {
     // 对请求错误做些什么
-    return Promise.reject(error)
+    return Promise.reject(error);
   },
-)
+);
 
 // 添加响应拦截器
 axios.interceptors.response.use(
   function (response) {
-    console.log(response)
-    const { data } = response
+    console.log(response);
+    const { data } = response;
 
     // 未登录
     if (data.code === 40100) {
       // 后端返回的错误码是未登录，如果是登录的操作跳转到登录页面，不是则不跳转
       if (
-        !response.request.responseURL.includes('user/current') &&
-        !window.location.pathname.includes('user/login')
+        !response.request.responseURL.includes("user/current") &&
+        !window.location.pathname.includes("user/login")
       ) {
-        window.location.href = '/user/login?redirect=${window.location.href}'
+        window.location.href = "/user/login?redirect=${window.location.href}";
       }
     }
-    return response
+    return response;
   },
 
   function (error) {
     // 超出 2xx 范围的状态码都会触发该函数。
     // 对响应错误做点什么
-    return Promise.reject(error)
+    return Promise.reject(error);
   },
-)
+);
+
+export default myAxios;
