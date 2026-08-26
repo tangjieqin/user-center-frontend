@@ -29,9 +29,14 @@
       </a-col>
 
       <!-- 登录按钮 -->
-      <a-col flex="80">
+      <a-col flex="80px">
         <div class="user-login-status">
-          <a-button type="primary" href="/user/login">登录</a-button>
+          <div v-if="loginUserStore.loginUser.id">
+            {{ loginUserStore.loginUser.username ?? "无名" }}
+          </div>
+          <div v-else>
+            <a-button type="primary" href="/user/login">登录</a-button>
+          </div>
         </div>
       </a-col>
     </a-row>
@@ -43,27 +48,31 @@ h函数：渲染函数，用来在 JS 中创建虚拟 DOM 节点
 ref函数：创建响应式数据，数据变化时界面自动更新
 -->
 <script lang="ts" setup>
-import { h, ref, computed } from 'vue'
-import { HomeOutlined, CrownOutlined } from '@ant-design/icons-vue'
-import { type MenuProps } from 'ant-design-vue'
-import { useRouter, useRoute } from 'vue-router'
+import { h, ref, computed } from "vue";
+import { HomeOutlined, CrownOutlined } from "@ant-design/icons-vue";
+import { type MenuProps } from "ant-design-vue";
+import { useRouter, useRoute } from "vue-router";
+// 导入Store
+import { useLoginUserStore } from "@/stores/useLoginUserStore";
 
+// 获取Store实例
+const loginUserStore = useLoginUserStore();
 /*
 useRouter()	路由实例，用来跳转
 useRoute()	当前路由信息，用来读取
 */
-const router = useRouter()
-const route = useRoute()
+const router = useRouter();
+const route = useRoute();
 
 // 点击菜单后的路由跳转事件
 const doMenuClick = ({ key }: { key: string }) => {
-  if (key.startsWith('/')) {
-    router.push(key)
+  if (key.startsWith("/")) {
+    router.push(key);
   }
-}
+};
 
 // computed = 根据其他响应式数据，自动计算出一个新的响应式数据,当 route.path 变化时，自动重新计算 current，并更新界面。
-const current = computed(() => [route.path])
+const current = computed(() => [route.path]);
 
 /* const current = ref<string[]>(['/']) // 临时存储当前选中状态，默认选中 key 为 主页 的菜单
 afterEach 是路由跳转完成后的"钩子函数"，每次切换页面都会自动触发。 常用来做页面标题更新、日志记录、埋点上报等操作。
@@ -71,30 +80,30 @@ router.afterEach((to) => {
   current.value = [to.path]
 }) */
 
-const items = ref<MenuProps['items']>([
+const items = ref<MenuProps["items"]>([
   {
-    key: '/',
+    key: "/",
     icon: () => h(HomeOutlined),
-    label: '主页',
-    title: '主页',
+    label: "主页",
+    title: "主页",
   },
   {
-    key: '/user/login',
-    label: '用户登录',
-    title: '用户登录',
+    key: "/user/login",
+    label: "用户登录",
+    title: "用户登录",
   },
   {
-    key: '/admin/userManager',
+    key: "/admin/userManager",
     icon: () => h(CrownOutlined),
-    label: '用户管理',
-    title: '用户管理',
+    label: "用户管理",
+    title: "用户管理",
   },
   {
-    key: 'others',
-    label: h('a', { href: 'https://antdv.com', target: '_blank' }, 'UI 组件库'),
-    title: 'UI 组件库',
+    key: "others",
+    label: h("a", { href: "https://antdv.com", target: "_blank" }, "UI 组件库"),
+    title: "UI 组件库",
   },
-])
+]);
 </script>
 
 <style scoped>
