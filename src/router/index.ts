@@ -5,50 +5,49 @@ createWebHistory: 创建 HTML5 历史模式（地址栏没有 #，如 http://xxx
 RouteRecordRaw: TypeScript 类型，用来约束路由配置的格式（只用于类型检查，不生成 JS 代码）
 */
 
-import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
-import HomeView from '@/views/HomeView.vue'
-import UserLoginAndRegisterView from '@/views/UserLoginAndRegisterView.vue'
-import UserInformationView from'@/views/UserInformationView.vue'
-
+import { createRouter, createWebHistory, type RouteRecordRaw } from "vue-router";
+import HomePage from "@/pages/HomePage.vue";
+import UserLoginPage from "@/pages/user/UserLoginPage.vue";
+import UserRegisterPage from "@/pages/user/UserRegisterPage.vue";
 /*
 直接导入：import HomeView from '...'	打包进主文件（vendor.js）	页面加载时就下载
 懒加载： () => import('...')	单独打包成独立文件	访问时才下载
 */
 const routes: Array<RouteRecordRaw> = [
   {
-    path: '/',           // URL 路径
-    name: 'home',
-    component: HomeView, // 匹配到该路径后，要渲染的 Vue 组件,  首页：静态导入（秒开）
+    path: "/", // URL 路径
+    name: "home",
+    component: HomePage, // 匹配到该路径后，要渲染的 Vue 组件,  首页：静态导入（秒开）
   },
   {
-    path: '/user/login',
-    name: '登录',
-    component: UserLoginAndRegisterView,
+    path: "/user/login",
+    name: "登录",
+    component: UserLoginPage,
   },
   {
-    path: '/user/information',
-    name: '个人信息',
-    component: UserInformationView,     // 可静态可动态
+    path: "/user/register",
+    name: "个人信息",
+    component: UserRegisterPage, // 可静态可动态
   },
   {
-    path: '/admin/userManage',
-    name: '用户管理',
-    component: () => import('@/views/UserAdminView.vue'), // 懒加载
+    path: "/admin/userManage",
+    name: "用户管理",
+    component: () => import("@/pages/admin/UserManagePage.vue"), // 懒加载
   },
   {
-    path: '/admin/userManageDetail/:id',
-    name: '用户详细管理',
-    component: () => import('@/views/UserAdminInformationView.vue'),
+    path: "/admin/userManageDetail/:id",
+    name: "用户详细管理",
+    component: () => import("@/pages/admin/UserAdminInformationPage.vue"),
   },
   {
-    path: '/:pathMatch(.*)*', // 通配符路由
-    redirect: '/'              // 重定向到首页
-  }
-]
+    path: "/:pathMatch(.*)*", // 通配符路由
+    redirect: "/", // 重定向到首页
+  },
+];
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
-})
+});
 
-export default router
+export default router;
