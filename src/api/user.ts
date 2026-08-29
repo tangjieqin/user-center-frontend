@@ -2,12 +2,12 @@ import myAxios from "@/request";
 
 // 定义输入参数类型
 interface UserLogin {
-  userAccount: string;
+  username: string;
   userPassword: string;
 }
 
 interface UserRegister {
-  userAccount: string;
+  username: string;
   userPassword: string;
   checkPassword: string;
 }
@@ -29,6 +29,18 @@ interface UserType {
   [key: string]: unknown;
 }
 
+// 1. 定义后端统一响应体泛型接口
+interface ApiResponse<T = unknown> {
+  code: number;
+  message: string;
+  data: T;
+}
+
+// 2. 定义登录成功的业务数据类型
+interface LoginResult {
+  token: string;
+}
+
 /**
  * 用户注册
  * @param param
@@ -46,12 +58,28 @@ export const userRegister = async (params: UserRegister) => {
  * @param param
  * @returns
  */
-export const userLogin = async (param: UserLogin) => {
+export const userLogin = async (param: UserLogin): Promise<ApiResponse<LoginResult>> => {
   return myAxios.request({
     url: "/api/user/login",
     method: "POST",
     data: param,
   });
+  /*  // mock数据
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (param.username === "admin" && param.userPassword === "12345678") {
+        resolve({
+          code: 0,
+          message: "登录成功",
+          data: {
+            token: "mock-token-123456",
+          },
+        });
+      } else {
+        reject(new Error("用户名或密码错误"));
+      }
+    }, 500);
+  }); */
 };
 
 /**

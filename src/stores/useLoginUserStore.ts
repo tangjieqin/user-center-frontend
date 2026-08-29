@@ -25,6 +25,15 @@ export const useLoginUserStore = defineStore("loginUser", () => {
     if (res.data.code === 0 && res.data.data) {
       loginUser.value = res.data.data;
     }
+
+    /* // 模拟网络请求
+    await new Promise((resolve) => setTimeout(resolve, 300));
+
+    // 模拟后端返回的用户信息
+    loginUser.value = {
+      id: 1,
+      username: "admin",
+    }; */
   }
 
   // 单独设置这个信息
@@ -32,6 +41,10 @@ export const useLoginUserStore = defineStore("loginUser", () => {
     loginUser.value = newLoginUser;
   }
 
+  function setToken(token: string) {
+    localStorage.setItem("token", token);
+  }
+
   // 4. 将需要暴露的内容返回
-  return { loginUser, fetchLoginUser, setLoginUser };
+  return { loginUser, fetchLoginUser, setLoginUser, setToken };
 });

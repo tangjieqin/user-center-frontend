@@ -6,7 +6,7 @@
       <a-col flex="200px">
         <div class="title-bar">
           <img class="logo" src="../assets/logo.png" alt="logo" />
-          <div class="title">这是我的中心</div>
+          <div class="title">我的中心</div>
         </div>
       </a-col>
       <!-- 菜单栏 -->
@@ -91,6 +91,11 @@ const items = ref<MenuProps["items"]>([
     key: "/user/login",
     label: "用户登录",
     title: "用户登录",
+  },
+  {
+    key: "/user/register",
+    label: "用户注册",
+    title: "用户注册",
   },
   {
     key: "/admin/userManager",
