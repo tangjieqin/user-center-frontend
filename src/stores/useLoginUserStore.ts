@@ -7,6 +7,7 @@ interface LoginUser {
   id?: number; // 可选属性，根据后端返回决定
   username: string; // 必填属性
   avatar?: string; // 可选属性
+  userRole?: number; // 可选属性
   // 如果后端还有其他字段，继续在此添加即可
 }
 

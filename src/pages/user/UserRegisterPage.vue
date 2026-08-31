@@ -83,7 +83,7 @@ const handleSubmit = async (values: FormState) => {
       replace: true,
     });
   } else {
-    message.error("注册失败" + res.data.describtion);
+    message.error("注册失败" + res.data.description);
   }
 };
 </script>

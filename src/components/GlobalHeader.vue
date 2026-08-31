@@ -98,7 +98,7 @@ const items = ref<MenuProps["items"]>([
     title: "用户注册",
   },
   {
-    key: "/admin/userManager",
+    key: "/admin/userManage",
     icon: () => h(CrownOutlined),
     label: "用户管理",
     title: "用户管理",
